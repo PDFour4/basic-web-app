@@ -195,5 +195,21 @@ export default function QueryProcessor(query: string): string {
       return score.toString();
     }
   }
+
+  if(query.toLowerCase().includes("anagram")) {
+    const words = query.match(/[a-zA-Z]+/g);
+    if (words && words.length >= 2) {
+      const sortedWords = words.map(word => word.toLowerCase().split("").sort().join(""));
+      const anagrams = [];
+      for (let i = 0; i < sortedWords.length; i++) {
+        for (let j = i + 1; j < sortedWords.length; j++) {
+          if (sortedWords[i] === sortedWords[j]) {
+            anagrams.push(words[i], words[j]);
+          }
+        }
+      }
+      return Array.from(new Set(anagrams)).join(", ");
+    }
+  }
   return "";
 }
