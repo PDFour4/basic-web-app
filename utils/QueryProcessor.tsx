@@ -37,7 +37,8 @@ export default function QueryProcessor(query: string): string {
   if (query.toLowerCase().includes("minus")) {
     const numbers = query.match(/\d+/g);
     if (numbers && numbers.length >= 2) {
-      const difference = numbers.reduce((acc, num) => acc - parseInt(num), 0);
+      // Add functionality to handle more than two numbers, subtracting all subsequent numbers from the first one
+      const difference = numbers.slice(1).reduce((acc, num) => acc - parseInt(num), parseInt(numbers[0]));
       return difference.toString();
     }
   }
@@ -53,7 +54,7 @@ export default function QueryProcessor(query: string): string {
   if (query.toLowerCase().includes("divided")) {
     const numbers = query.match(/\d+/g);
     if (numbers && numbers.length >= 2) {
-      const quotient = parseInt(numbers[0]) / parseInt(numbers[1]);
+      const quotient = numbers.reduce((acc, num) => acc / parseInt(num), parseInt(numbers[0]));
       return quotient.toString();
     }
   }
