@@ -71,5 +71,21 @@ export default function QueryProcessor(query: string): string {
     }
   }
 
+  // Third round queries
+  if(query.toLowerCase().includes("primes")) {
+    const numbers = query.match(/\d+/g);
+    if (numbers && numbers.length >= 1) {
+      const primes = numbers.filter(num => {
+        const n = parseInt(num);
+        if (n <= 1) return false;
+        for (let i = 2; i <= Math.sqrt(n); i++) {
+          if (n % i === 0) return false;
+        }
+        return true;
+      });
+      return primes.join(", ");
+    }
+  }
+
   return "";
 }
