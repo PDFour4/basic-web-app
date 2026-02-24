@@ -58,7 +58,7 @@ export default function QueryProcessor(query: string): string {
   }
 
   // Second round queries
-  if(query.toLowerCase().includes("square and cube")) {
+  if(query.toLowerCase().includes("square and a cube")) {
     const numbers = query.match(/\d+/g);
     if (numbers && numbers.length >= 1) {
       // finding the number that is both a perfect square and a perfect cube
