@@ -61,13 +61,15 @@ export default function QueryProcessor(query: string): string {
   if(query.toLowerCase().includes("square and a cube")) {
     const numbers = query.match(/\d+/g);
     if (numbers && numbers.length >= 1) {
-      // finding the number in a list of numbers that is both a square and a perfect cube
+      // finding the number or numbers in a list of numbers that is both a square and a perfect cube
+      const results = [];
       for (let i = 0; i < numbers.length; i++) {
         const num = parseInt(numbers[i]);
         if (Number.isInteger(Math.sqrt(num)) && Number.isInteger(Math.cbrt(num))) {
-          return num.toString();
+          results.push(num);
         }
       }
+      return results.join(", ");
     }
   }
 
