@@ -1,3 +1,72 @@
+function evaluateMixedExpression(query: string): string {
+  const lowerQuery = query.toLowerCase();
+  const numbers = query.match(/\d+/g);
+  
+  if (!numbers || numbers.length < 2) {
+    return "";
+  }
+  
+  // Extract operations in order from the query
+  const operations: string[] = [];
+  let queryToSearch = lowerQuery;
+  let lastIndex = 0;
+  
+  for (let i = 0; i < numbers.length - 1; i++) {
+    // Find what operation comes after each number
+    const currentNumIndex = queryToSearch.indexOf(numbers[i], lastIndex);
+    const nextNumIndex = queryToSearch.indexOf(numbers[i + 1], currentNumIndex);
+    
+    if (currentNumIndex !== -1 && nextNumIndex !== -1) {
+      const betweenText = queryToSearch.substring(currentNumIndex + numbers[i].length, nextNumIndex).toLowerCase();
+      
+      if (betweenText.includes("plus")) {
+        operations.push("+");
+      } else if (betweenText.includes("minus")) {
+        operations.push("-");
+      } else if (betweenText.includes("multiplied")) {
+        operations.push("*");
+      } else if (betweenText.includes("divided")) {
+        operations.push("/");
+      }
+      lastIndex = nextNumIndex;
+    }
+  }
+  
+  if (operations.length === 0) {
+    return "";
+  }
+  
+  // Create expression array with numbers and operations
+  const expression: (number | string)[] = [];
+  for (let i = 0; i < numbers.length; i++) {
+    expression.push(parseInt(numbers[i]));
+    if (i < operations.length) {
+      expression.push(operations[i]);
+    }
+  }
+  
+  // First pass: handle * and /
+  for (let i = 1; i < expression.length; i += 2) {
+    if (expression[i] === "*" || expression[i] === "/") {
+      const left = expression[i - 1] as number;
+      const right = expression[i + 1] as number;
+      const result = expression[i] === "*" ? left * right : left / right;
+      expression.splice(i - 1, 3, result);
+      i -= 2;
+    }
+  }
+  
+  // Second pass: handle + and -
+  let result = expression[0] as number;
+  for (let i = 1; i < expression.length; i += 2) {
+    const op = expression[i] as string;
+    const right = expression[i + 1] as number;
+    result = op === "+" ? result + right : result - right;
+  }
+  
+  return result.toString();
+}
+
 export default function QueryProcessor(query: string): string {
   // Basic queries
   if (query.toLowerCase().includes("shakespeare")) {
@@ -89,6 +158,23 @@ export default function QueryProcessor(query: string): string {
       });
       return primes.join(", ");
     }
+  }
+
+  // Fourth round queries
+  if(query.toLowerCase().includes("power")) {
+    const numbers = query.match(/\d+/g);
+    if (numbers && numbers.length >= 2) {
+      const base = parseInt(numbers[0]);
+      const exponent = parseInt(numbers[1]);
+      const result = Math.pow(base, exponent);
+      return result.toString();
+    }
+  }
+  
+  // Mixed operations (plus, minus, multiplied, divided)
+  if((query.toLowerCase().includes("plus") || query.toLowerCase().includes("minus")) && 
+     (query.toLowerCase().includes("multiplied") || query.toLowerCase().includes("divided"))) {
+    return evaluateMixedExpression(query);
   }
 
   return "";

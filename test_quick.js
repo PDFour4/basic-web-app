@@ -1,0 +1,12 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const QueryProcessor_1 = require("./utils/QueryProcessor");
+const query1 = 'What is 11 plus 53 multiplied by 93?';
+const query2 = 'What is 6 multiplied by 21 plus 33?';
+console.log('Query 1:', query1);
+console.log('Result:', (0, QueryProcessor_1.default)(query1));
+console.log('Expected: 4940');
+console.log();
+console.log('Query 2:', query2);
+console.log('Result:', (0, QueryProcessor_1.default)(query2));
+console.log('Expected: 159');
