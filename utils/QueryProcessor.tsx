@@ -20,7 +20,8 @@ export default function QueryProcessor(query: string): string {
   if (query.toLowerCase().includes("plus")) {
     const numbers = query.match(/\d+/g);
     if (numbers && numbers.length >= 2) {
-      const sum = parseInt(numbers[0]) + parseInt(numbers[1]);
+      // Add functionality to handle more than two numbers
+      const sum = numbers.reduce((acc, num) => acc + parseInt(num), 0);
       return sum.toString();
     }
   }
@@ -36,7 +37,7 @@ export default function QueryProcessor(query: string): string {
   if (query.toLowerCase().includes("minus")) {
     const numbers = query.match(/\d+/g);
     if (numbers && numbers.length >= 2) {
-      const difference = parseInt(numbers[0]) - parseInt(numbers[1]);
+      const difference = numbers.reduce((acc, num) => acc - parseInt(num), 0);
       return difference.toString();
     }
   }
@@ -44,7 +45,7 @@ export default function QueryProcessor(query: string): string {
   if (query.toLowerCase().includes("multiplied")) {
     const numbers = query.match(/\d+/g);
     if (numbers && numbers.length >= 2) {
-      const product = parseInt(numbers[0]) * parseInt(numbers[1]);
+      const product = numbers.reduce((acc, num) => acc * parseInt(num), 1);
       return product.toString();
     }
   }
