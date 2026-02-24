@@ -39,5 +39,21 @@ export default function QueryProcessor(query: string): string {
     }
   }
 
+  if (query.toLowerCase().includes("multiplied")) {
+    const numbers = query.match(/\d+/g);
+    if (numbers && numbers.length >= 2) {
+      const product = parseInt(numbers[0]) * parseInt(numbers[1]);
+      return product.toString();
+    }
+  }
+
+  if (query.toLowerCase().includes("divided")) {
+    const numbers = query.match(/\d+/g);
+    if (numbers && numbers.length >= 2) {
+      const quotient = parseInt(numbers[0]) / parseInt(numbers[1]);
+      return quotient.toString();
+    }
+  }
+
   return "";
 }
